@@ -43,10 +43,12 @@ head(db)
 skim(db) %>% head()
 
 summary(db$age)
-summary(db_menores$totalHoursWorked)
+
 
 #Analisis de edad y horas trabajadas
 db_menores <- db %>% filter(age<19, age>13)
+summary(db_menores$totalHoursWorked)
+
 g1 <- ggplot(data=db_menores, aes(x = age, y = totalHoursWorked)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm") +
@@ -108,4 +110,4 @@ ggplot(data=db, mapping = aes(x = oficio, y = y_total_m_ha)) + geom_point(col = 
 
 base_final <- db
 
-write.csv(base_final, "base_final.csv", row.names = FALSE)
+write.csv(base_final, "02_outputs/tables/db_preliminar.csv", row.names = FALSE)
