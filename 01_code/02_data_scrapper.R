@@ -29,17 +29,43 @@
 
 
 
-new_url <- "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_1.html"
+#new_url <- "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_1.html"
 
-my_html <- read_html(new_url)
-tabla_1 <- my_html %>% html_table()
-tabla_1 <- tabla_1[[1]]
-names(tabla_1)[1] <- "lista"
+#my_html <- read_html(new_url)
+#tabla_1 <- my_html %>% html_table()
+#tabla_1 <- tabla_1[[1]]
+#names(tabla_1)[1] <- "lista"
 #names(tabla_1) <- c("orden")
 
-db <- as_tibble(tabla_1)
-head(db)
+#db <- as_tibble(tabla_1)
+#head(db)
 
+###loop para importar todas las paginas de la base de datos
+pages <- 1:10
+
+lista_tablas <- lapply(pages, function(i) {
+  
+  url <- paste0(
+    "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_",
+    i,
+    ".html"
+  )
+  
+  tabla <- read_html(url) %>%
+    html_table(fill = TRUE) %>%
+    .[[1]]
+  
+  # Eliminar la primera columna (que enumera las observaciones para cada pagina html)
+  tabla <- tabla[, names(tabla) != ""]
+  
+  tabla
+})
+
+db <- bind_rows(lista_tablas)
+
+
+
+###
 skim(db) %>% head()
 
 summary(db$age)

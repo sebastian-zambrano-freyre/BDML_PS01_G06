@@ -7,7 +7,12 @@ p_load(rio, # import/export data
        skimr, # summary data
        visdat, # visualizing missing data
        corrplot, # Correlation Plots 
-       stargazer) # tables/output to TEX.
+       stargazer,        # tables/output to TEX.
+       dplyr,
+       tibble,
+       fixest,
+       boot,
+       ggplot2)
 
 require(pacman) 
 
