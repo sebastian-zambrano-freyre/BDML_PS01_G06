@@ -73,3 +73,56 @@ score1
 score2
 score3
 score4
+
+db_train <- db_train %>% mutate(
+  femage = female * age,
+  femage2 = female * age2
+)
+
+db_test <- db_test %>% mutate(
+  femage = female * age,
+  femage2 = female * age2
+)
+
+
+##Nuevos modelos
+modelo_5 <- log_salary ~ female + age + age2 + femage + college + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_6 <- log_salary ~ female + age + age2 + femage + femage2 + college + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_7 <- log_salary ~ female + age + age2 + femage + p6050 + college + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_8 <- log_salary ~ female + age + age2 + maxEducLevel + femage + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_9 <- log_salary ~ female + age + age2 + maxEducLevel + femage + femage2 + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_10 <- log_salary ~ female + age + age2 + maxEducLevel + p7040 + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_11 <- log_salary ~ female + age + age2 + maxEducLevel + p7040 + femage + hoursWorkUsual + formal + sizeFirm + oficio
+modelo_12 <- log_salary ~ female + age + age2 + maxEducLevel + p7040 + femage + femage2 + hoursWorkUsual + formal + sizeFirm + oficio
+
+
+
+modelos <- list()
+predicciones <- list()
+rmse_scores <- numeric(12)  # vector para RMSE
+
+# Loop de 5 a 12
+for (i in 5:12) {
+  
+  # Construir el nombre de la fórmula
+  formula_name <- paste0("modelo_", i)
+  
+  # Obtener la fórmula usando get()
+  formula_i <- get(formula_name)
+  
+  # Ajustar modelo con lm()
+  modelos[[i]] <- lm(formula_i, data = db_train)
+  
+  # Predecir sobre db_test
+  predicciones[[i]] <- predict(modelos[[i]], newdata = db_test)
+  
+  # Calcular RMSE
+  rmse_scores[i] <- RMSE(pred = predicciones[[i]], obs = db_test$log_salary)
+  
+  # Opcional: imprimir resultado
+  cat("Modelo", i, "RMSE =", rmse_scores[i], "\n")
+}
+
+# RMSE finales
+rmse_scores[5:12]
+
