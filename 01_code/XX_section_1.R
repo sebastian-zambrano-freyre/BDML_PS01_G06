@@ -17,8 +17,9 @@ m1 <- lm(
   data = db_1
 )
 
-#summary(m1)
+summary(m1)
 stargazer(m1, type = "text")
+
 
 #Modelo 2
 m2 <- lm(
@@ -27,7 +28,7 @@ m2 <- lm(
   data = db_1
 )
 
-#summary(m2)
+summary(m2)
 stargazer(m2, type = "text") 
 
 
@@ -55,7 +56,7 @@ ggplot(db_1, aes(x = age)) +
   #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
   geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
   geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
-  geom_line(aes(y = predicciones2_1), color = "black", linewidth = 0.5) +  # Predicción 2.1
+  geom_line(aes(y = predicciones2_1), color = "orange", linewidth = 0.5) +  # Predicción 2.1
   geom_line(aes(y = predicciones2_2), color = "green", linewidth = 0.5) +  # Predicción 2.1
   labs(title = "Predicciones del modelo",
        x = "age",
@@ -92,3 +93,5 @@ boot_results <- boot(
 ##Intervalo de confianza
 
 boot.ci(boot_results, type = "perc")
+
+stargazer(m1, m2, type = "text")
