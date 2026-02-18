@@ -62,3 +62,33 @@ ggplot(db_1, aes(x = age)) +
        y = "log_salary") +
   theme_minimal()
 
+##Calculo de la edad pico con BOOTSTRAP
+boot_fn <- function(data, indices) {
+  
+  d <- data[indices, ]   # remuestreo
+  
+  model <- lm(
+    log_salary ~ age + age2,
+    data = d
+  )
+  
+  beta_2 <- coef(model)["age"]
+  beta_3 <- coef(model)["age2"]
+  
+  edad_pico <- (-1 * beta_2) / (2 * beta_3)
+  
+  return(edad_pico)
+  
+}
+
+set.seed(777)
+
+boot_results <- boot(
+  data = db_1,
+  statistic = boot_fn,
+  R = 500   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
+)
+
+##Intervalo de confianza
+
+boot.ci(boot_results, type = "perc")
