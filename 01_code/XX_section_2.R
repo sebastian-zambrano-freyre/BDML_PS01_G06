@@ -14,17 +14,17 @@ db_2 <- db %>% mutate(
     age2 = age^2
   )
 
-##Modelo 1
-m1 <- feols(
+##Modelo 3
+m3 <- feols(
   log_salary ~ female,
   data = db_2
 )
 
-summary(m1)
+summary(m3)
 
-#Modelo 2 
+#Modelo 4
 
-m2 <- feols(
+m4 <- feols(
   log_salary ~ female +
     age + age2 +
     college +
@@ -35,17 +35,17 @@ m2 <- feols(
   data = db_2
 )
 
-summary(m2)
+summary(m4)
 
 #Los datos son unicamente de Bogota, no es necesario aplicar EF de departamento
 #unique(db_2$depto)
 
 ##Tabla comparativa
-etable(m1, m2)
+etable(m3, m4)
 
 ##errores estandar analiticos
 
-se_an <- se(m2)["female"]
+se_an <- se(m4)["female"]
 se_an
 
 ##errores estandar bootstrap
@@ -112,7 +112,7 @@ profile_df$log_pred <- mapply(
   avg_profile,
   age_value = profile_df$age,
   female_value = profile_df$female,
-  MoreArgs = list(model = m2, data = db_2)
+  MoreArgs = list(model = m4, data = db_2)
 )
 
 ##profile_df$wage_pred <- exp(profile_df$log_pred) ### Se puede usar para
@@ -134,18 +134,18 @@ ggplot(profile_df, aes(x = age, y = log_pred, color = factor(female))) +
 
 ###
 
-b2 <- coef(m2)["age"]
-b3 <- coef(m2)["age2"]
+b2 <- coef(m4)["age"]
+b3 <- coef(m4)["age2"]
 
 peak_age <- -b2 / (2*b3)
 peak_age
 
 # Coeficientes
-b2 <- coef(m2)["age"]
-b3 <- coef(m2)["age2"]
+b2 <- coef(m4)["age"]
+b3 <- coef(m4)["age2"]
 
 # Matriz var-cov
-V <- vcov(m2)
+V <- vcov(m4)
 
 # Gradiente
 g1 <- -1 / (2*b3)
@@ -168,8 +168,8 @@ c(Peak = peak_age,
   CI_Upper = ci_upper)
 
 profile_df$age_component <- 
-  coef(m2)["age"]*profile_df$age +
-  coef(m2)["age2"]*(profile_df$age^2)
+  coef(m4)["age"]*profile_df$age +
+  coef(m4)["age2"]*(profile_df$age^2)
 
 ggplot(profile_df, aes(age, age_component)) +
   geom_line()
@@ -208,7 +208,7 @@ pred_data <- pred_data %>%
     oficio = db_2$oficio[1]
   )
 
-pred_data$log_pred <- predict(m2, newdata = pred_data)
+pred_data$log_pred <- predict(m4, newdata = pred_data)
 
 # Si quieres salario en niveles:
 pred_data$wage_pred <- exp(pred_data$log_pred)
@@ -226,8 +226,3 @@ ggplot(pred_data, aes(x = age, y = wage_pred, color = factor(female))) +
   scale_color_manual(labels = c("Hombres", "Mujeres"),
                      values = c("blue", "red")) +
   theme_minimal()
-
-
-
-
-

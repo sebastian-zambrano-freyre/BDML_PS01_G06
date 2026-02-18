@@ -1,46 +1,4 @@
-#my_url = "https://es.wikipedia.org/wiki/Copa_Mundial_de_F%C3%BAtbol"
-#browseURL(my_url) ## Ir a la página
-
-#my_html = read_html(my_url) ## leer el html de la página
-#class(my_html) ## ver la clase del objeto
-
-#my_html %>% html_elements("h2")
-
-#my_html %>% html_node("table") %>% html_table()
-
-#my_html %>% html_nodes("table") %>% .[[3]] %>% html_table()
-
-
-
-#my_url = "https://ignaciomsarmiento.github.io/GEIH2018_sample/page1.html"
-#browseURL(my_url) ## Ir a la página
-
-#my_html = read_html(my_url) ## leer el html de la página
-#class(my_html) ## ver la clase del objeto
-
-#my_html %>% html_elements("h2")
-
-#my_html %>% html_node("table") %>% html_table()
-#my_html %>% html_nodes("table")
-
-#tabla_1 <- my_html %>% html_element(xpath = "/html/body/div/div/div[2]/div/table")
-
-#my_html %>% html_nodes("table") %>% .[[3]] %>% html_table()
-
-
-
-#new_url <- "https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_1.html"
-
-#my_html <- read_html(new_url)
-#tabla_1 <- my_html %>% html_table()
-#tabla_1 <- tabla_1[[1]]
-#names(tabla_1)[1] <- "lista"
-#names(tabla_1) <- c("orden")
-
-#db <- as_tibble(tabla_1)
-#head(db)
-
-###loop para importar todas las paginas de la base de datos
+###Loop para importar todas las paginas de la base de datos
 pages <- 1:10
 
 lista_tablas <- lapply(pages, function(i) {
@@ -62,8 +20,6 @@ lista_tablas <- lapply(pages, function(i) {
 })
 
 db <- bind_rows(lista_tablas)
-
-
 
 ###
 skim(db) %>% head()
