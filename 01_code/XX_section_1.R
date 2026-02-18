@@ -38,4 +38,4 @@ m2 <- lm(
 )
 
 #summary(m2)
-stargazer(m2, type = "text")
+stargazer(m2, type = "text") 

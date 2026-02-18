@@ -92,4 +92,4 @@ ggplot(data=db, mapping = aes(x = oficio, y = y_total_m_ha)) + geom_point(col = 
 
 base_final <- db
 
-write.csv(base_final, "02_outputs/tables/db_preliminar.csv", row.names = FALSE)
+write.csv(base_final, "02_outputs/tables/db_preliminar.csv", row.names = FALSE) 

@@ -18,7 +18,7 @@ db_2 <- db %>% mutate(
 m3 <- feols(
   log_salary ~ female,
   data = db_2
-)
+) 
 
 summary(m3)
 
