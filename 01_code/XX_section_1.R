@@ -62,6 +62,3 @@ ggplot(db_1, aes(x = age)) +
        y = "log_salary") +
   theme_minimal()
 
-
-
-
