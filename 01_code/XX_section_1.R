@@ -20,22 +20,47 @@ m1 <- lm(
 #summary(m1)
 stargazer(m1, type = "text")
 
-
-db_1$predicciones <- predict(m1, newdata = db_1)
-
-ggplot(db_1, aes(x = age)) +
-  geom_point(aes(y = log_salary), color = "black") +          # Datos reales
-  geom_line(aes(y = predicciones), color = "blue", linewidth = 1) +  # Predicción
-  labs(title = "Datos reales vs Predicciones del modelo",
-       x = "age",
-       y = "log_salary") +
-  theme_minimal()
-
 #Modelo 2
 m2 <- lm(
-  log_salary ~ age + age2,
+  log_salary ~ age + age2 +
+    totalHoursWorked + relab,
   data = db_1
 )
 
 #summary(m2)
 stargazer(m2, type = "text") 
+
+
+db_1$predicciones1 <- predict(m1)
+
+coef_m2 <- coef(m2)
+
+# Crear predicción manual usando solo age y age2
+db_1$predicciones2 <- coef_m2["(Intercept)"] +
+  coef_m2["age"] * db_1$age +
+  coef_m2["age2"] * db_1$age2
+
+mean_hours <- mean(db_1$totalHoursWorked, na.rm = TRUE)
+mean_relab <- mean(db_1$relab, na.rm = TRUE)
+
+db_1$predicciones2_1 <- coef_m2["(Intercept)"] +
+  coef_m2["age"] * db_1$age +
+  coef_m2["age2"] * db_1$age2 +
+  coef_m2["totalHoursWorked"] * mean_hours +
+  coef_m2["relab"] * mean_relab
+
+db_1$predicciones2_2 <- predict(m2)
+
+ggplot(db_1, aes(x = age)) +
+  #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
+  geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
+  geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
+  geom_line(aes(y = predicciones2_1), color = "black", linewidth = 0.5) +  # Predicción 2.1
+  geom_line(aes(y = predicciones2_2), color = "green", linewidth = 0.5) +  # Predicción 2.1
+  labs(title = "Predicciones del modelo",
+       x = "age",
+       y = "log_salary") +
+  theme_minimal()
+
+
+
