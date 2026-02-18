@@ -12,7 +12,8 @@ p_load(rio, # import/export data
        tibble,
        fixest,
        boot,
-       ggplot2)
+       ggplot2,
+       caret)
 
 require(pacman) 
 
