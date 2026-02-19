@@ -42,17 +42,6 @@ predictions <- predict(object=m2, newdata=db_test)
 score2 <- RMSE(pred = predictions, obs = db_test$log_salary)
 score2
 
-m4 <- feols(
-  log_salary ~ female +
-    age + age2 +
-    college +
-    hoursWorkUsual +
-    formal +
-    sizeFirm
-  | oficio,
-  data = db_2
-)
-
 modelo_3 <- log_salary ~ female
 m3 <- lm(modelo_3,
          data = db_train)
