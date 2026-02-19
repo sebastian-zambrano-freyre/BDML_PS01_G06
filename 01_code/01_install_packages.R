@@ -1,5 +1,6 @@
 # install pacman
 if(!require(pacman)) install.packages("pacman") ; require(pacman)
+if(!require(gt)) install.packages("gt") ; require(gt)
 
 # require/install packages on this session
 p_load(rio, # import/export data
@@ -13,7 +14,9 @@ p_load(rio, # import/export data
        fixest,
        boot,
        ggplot2,
-       caret)
+       caret,
+       modelsummary,
+       gt)
 
 require(pacman) 
 

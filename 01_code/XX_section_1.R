@@ -59,9 +59,11 @@ boot_results <- boot(
   R = 2000   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
 )
 
-##Intervalo de confianza
-
+##Edad Pico e Intervalo de confianza
+edad_pico_m1 <- mean(boot_results$t)
+edad_pico_m1
 boot.ci(boot_results, type = "perc")
+ci_m1 <- quantile(boot_results$t, c(0.025, 0.975))
 
 ##Calculo de la edad pico con BOOTSTRAP para el Modelo 2
 boot_fn_2 <- function(data, indices) {
@@ -90,9 +92,11 @@ boot_results <- boot(
   R = 2000   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
 )
 
-##Intervalo de confianza
-
+##Edad Pico e Intervalo de confianza
+edad_pico_m2 <- mean(boot_results$t)
+edad_pico_m2
 boot.ci(boot_results, type = "perc")
+ci_m2 <- quantile(boot_results$t, c(0.025, 0.975))
 
 
 #Modelo 2 hecho con FWL
@@ -110,8 +114,49 @@ coef_fwl <- coef(modelo_fwl)
 
 stargazer(modelo_fwl, type = "text")
 
+extra_rows <- data.frame(
+  term = "Edad pico con Bootstrap",
+  
+  `Modelo 1` = sprintf("%.2f [%.2f , %.2f]",
+                       edad_pico_m1,
+                       ci_m1[1],
+                       ci_m1[2]),
+  
+  `Modelo 2` = sprintf("%.2f [%.2f , %.2f]",
+                       edad_pico_m2,
+                       ci_m2[1],
+                       ci_m2[2])
+)
 
-##################################3333
+tabla_1 <- modelsummary(
+  list("Modelo 1" = m1,
+       "Modelo 2" = m2),
+  
+  stars = c('*' = .1, '**' = .05, '***' = .01),
+  
+  gof_map = c("nobs", "r.squared"),
+  
+  add_rows = extra_rows,
+  
+  output = "gt"
+)
+
+tabla_1 <- tabla_1 |>
+  tab_header(
+    title = "Resultados de regresión del perfil de ingresos por edad",
+    subtitle = "Edad pico por Bootstrap para ambos modelos"
+  ) |>
+  cols_align(
+    align = "center",
+    columns = everything()
+  ) |>
+  tab_source_note(
+    source_note = "Errores estándar entre paréntesis. Intervalos Bootstrap al 95%"
+  )
+
+tabla_1
+
+##################################
 db_1$predicciones1 <- predict(m1)
 
 coef_m2 <- coef(m2)
@@ -143,9 +188,9 @@ stargazer(m1, m2, modelo_fwl, type = "text")
 ggplot(db_1, aes(x = age)) +
   #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
   geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
-  geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
-  geom_line(aes(y = predicciones2_1), color = "orange", linewidth = 0.5) +  # Predicción 2.1
-  geom_line(aes(y = predicciones2_3), color = "green", linewidth = 0.5) +  # Predicción 2.1
+  #geom_line(aes(y = predicciones2), color = "orange", linewidth = 0.5) +  # Predicción 2
+  geom_line(aes(y = predicciones2_1), color = "red", linewidth = 1) +  # Predicción 2.1
+  #geom_line(aes(y = predicciones2_3), color = "green", linewidth = 0.5) +  # Predicción 2.1
   labs(title = "Predicciones del modelo",
        x = "age",
        y = "log_salary") +
