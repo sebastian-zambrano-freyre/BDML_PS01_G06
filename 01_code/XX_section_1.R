@@ -95,3 +95,19 @@ boot_results <- boot(
 boot.ci(boot_results, type = "perc")
 
 stargazer(m1, m2, type = "text")
+
+
+
+#Modelo 2 hecho con FWL
+reg_y <- lm(log_salary ~ totalHoursWorked + relab, data = db_1)
+db_1$y_tilde <- resid(reg_y)
+
+reg_age <- lm(age ~ totalHoursWorked + relab, data = db_1)
+db_1$age_tilde <- resid(reg_age)
+
+reg_age2 <- lm(age2 ~ totalHoursWorked + relab, data = db_1)
+db_1$age2_tilde <- resid(reg_age2)
+
+modelo_fwl <- lm(y_tilde ~ age_tilde + age2_tilde - 1, data = db_1)
+
+stargazer(modelo_fwl, type = "text")
