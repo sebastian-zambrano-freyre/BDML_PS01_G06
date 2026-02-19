@@ -155,6 +155,8 @@ tabla_1 <- tabla_1 |>
   )
 
 tabla_1
+gtsave(tabla_1,
+       "tabla_1.html")
 
 ##################################
 db_1$predicciones1 <- predict(m1)

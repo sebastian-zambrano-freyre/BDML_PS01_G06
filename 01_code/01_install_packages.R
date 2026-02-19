@@ -1,6 +1,7 @@
 # install pacman
 if(!require(pacman)) install.packages("pacman") ; require(pacman)
 if(!require(gt)) install.packages("gt") ; require(gt)
+if(!require(webshot2)) install.packages("webshot2") ; require(webshot2)
 
 # require/install packages on this session
 p_load(rio, # import/export data
@@ -16,7 +17,8 @@ p_load(rio, # import/export data
        ggplot2,
        caret,
        modelsummary,
-       gt)
+       gt,
+       webshot2)
 
 require(pacman) 
 
