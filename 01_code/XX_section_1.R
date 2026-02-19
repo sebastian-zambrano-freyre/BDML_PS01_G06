@@ -32,27 +32,7 @@ summary(m2)
 stargazer(m2, type = "text") 
 
 
-db_1$predicciones1 <- predict(m1)
-
-coef_m2 <- coef(m2)
-
-# Crear predicción manual usando solo age y age2
-db_1$predicciones2 <- coef_m2["(Intercept)"] +
-  coef_m2["age"] * db_1$age +
-  coef_m2["age2"] * db_1$age2
-
-mean_hours <- mean(db_1$totalHoursWorked, na.rm = TRUE)
-mean_relab <- mean(db_1$relab, na.rm = TRUE)
-
-db_1$predicciones2_1 <- coef_m2["(Intercept)"] +
-  coef_m2["age"] * db_1$age +
-  coef_m2["age2"] * db_1$age2 +
-  coef_m2["totalHoursWorked"] * mean_hours +
-  coef_m2["relab"] * mean_relab
-
-db_1$predicciones2_2 <- predict(m2)
-
-##Calculo de la edad pico con BOOTSTRAP
+##Calculo de la edad pico con BOOTSTRAP para el Modelo 1
 boot_fn <- function(data, indices) {
   
   d <- data[indices, ]   # remuestreo
@@ -76,15 +56,43 @@ set.seed(777)
 boot_results <- boot(
   data = db_1,
   statistic = boot_fn,
-  R = 500   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
+  R = 2000   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
 )
 
 ##Intervalo de confianza
 
 boot.ci(boot_results, type = "perc")
 
-stargazer(m1, m2, type = "text")
+##Calculo de la edad pico con BOOTSTRAP para el Modelo 2
+boot_fn_2 <- function(data, indices) {
+  
+  d <- data[indices, ]   # remuestreo
+  
+  model <- lm(
+    log_salary ~ age + age2 + totalHoursWorked + relab,
+    data = d
+  )
+  
+  beta_2 <- coef(model)["age"]
+  beta_3 <- coef(model)["age2"]
+  
+  edad_pico <- (-1 * beta_2) / (2 * beta_3)
+  
+  return(edad_pico)
+  
+}
 
+set.seed(777)
+
+boot_results <- boot(
+  data = db_1,
+  statistic = boot_fn_2,
+  R = 2000   #Inicialmente usemos 500, si todo corre bien lo podemos subir a 1000 como sugiere la literatura
+)
+
+##Intervalo de confianza
+
+boot.ci(boot_results, type = "perc")
 
 
 #Modelo 2 hecho con FWL
@@ -98,17 +106,47 @@ reg_age2 <- lm(age2 ~ totalHoursWorked + relab, data = db_1)
 db_1$age2_tilde <- resid(reg_age2)
 
 modelo_fwl <- lm(y_tilde ~ age_tilde + age2_tilde - 1, data = db_1)
+coef_fwl <- coef(modelo_fwl)
 
 stargazer(modelo_fwl, type = "text")
+
+
+##################################3333
+db_1$predicciones1 <- predict(m1)
+
+coef_m2 <- coef(m2)
+
+# Crear predicción manual usando solo age y age2
+db_1$predicciones2 <- coef_m2["(Intercept)"] +
+  coef_m2["age"] * db_1$age +
+  coef_m2["age2"] * db_1$age2
+
+mean_hours <- mean(db_1$totalHoursWorked, na.rm = TRUE)
+mean_relab <- mean(db_1$relab, na.rm = TRUE)
+
+db_1$predicciones2_1 <- coef_m2["(Intercept)"] +
+  coef_m2["age"] * db_1$age +
+  coef_m2["age2"] * db_1$age2 +
+  coef_m2["totalHoursWorked"] * mean_hours +
+  coef_m2["relab"] * mean_relab
+
+db_1$predicciones2_2 <- predict(m2)
+
+db_1$pred_tilde <- predict(modelo_fwl)
+db_1$pred_controles <- predict(reg_y)
+#db_1$predicciones2_3 <- db_1$pred_tilde + db_1$pred_controles
+db_1$predcciones2_3 <- coef_fwl["age_tilde"] * db_1$age_tilde +
+  coef_fwl["age2_tilde"] * db_1$age2_tilde
+
+stargazer(m1, m2, modelo_fwl, type = "text")
 
 ggplot(db_1, aes(x = age)) +
   #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
   geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
   geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
   geom_line(aes(y = predicciones2_1), color = "orange", linewidth = 0.5) +  # Predicción 2.1
-  geom_line(aes(y = predicciones2_2), color = "green", linewidth = 0.5) +  # Predicción 2.1
+  geom_line(aes(y = predicciones2_3), color = "green", linewidth = 0.5) +  # Predicción 2.1
   labs(title = "Predicciones del modelo",
        x = "age",
        y = "log_salary") +
   theme_minimal()
-
