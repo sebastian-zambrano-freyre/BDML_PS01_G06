@@ -52,17 +52,6 @@ db_1$predicciones2_1 <- coef_m2["(Intercept)"] +
 
 db_1$predicciones2_2 <- predict(m2)
 
-ggplot(db_1, aes(x = age)) +
-  #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
-  geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
-  geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
-  geom_line(aes(y = predicciones2_1), color = "orange", linewidth = 0.5) +  # Predicción 2.1
-  geom_line(aes(y = predicciones2_2), color = "green", linewidth = 0.5) +  # Predicción 2.1
-  labs(title = "Predicciones del modelo",
-       x = "age",
-       y = "log_salary") +
-  theme_minimal()
-
 ##Calculo de la edad pico con BOOTSTRAP
 boot_fn <- function(data, indices) {
   
@@ -111,3 +100,14 @@ db_1$age2_tilde <- resid(reg_age2)
 modelo_fwl <- lm(y_tilde ~ age_tilde + age2_tilde - 1, data = db_1)
 
 stargazer(modelo_fwl, type = "text")
+
+ggplot(db_1, aes(x = age)) +
+  #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
+  geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
+  geom_line(aes(y = predicciones2), color = "red", linewidth = 0.5) +  # Predicción 2
+  geom_line(aes(y = predicciones2_1), color = "orange", linewidth = 0.5) +  # Predicción 2.1
+  geom_line(aes(y = predicciones2_2), color = "green", linewidth = 0.5) +  # Predicción 2.1
+  labs(title = "Predicciones del modelo",
+       x = "age",
+       y = "log_salary") +
+  theme_minimal()
