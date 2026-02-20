@@ -1,30 +1,18 @@
-
-
-#Nos quedamos con el modelo 11 :)
-# Ajustar modelo
-m11 <- lm(modelo_11, data = db_total)
-
-# Residuos
-e <- resid(m11)
-
-# Leverage (diagonal de la hat matrix)
-h <- hatvalues(m11)
-
-# LOOCV RMSE
-rmse_loocv <- sqrt(mean((e / (1 - h))^2))
-
-rmse_loocv
-
-
+# Debemos encontrar indicadores para medir el error de
+# predicción. Se presentan 2
+# Error derivado del LOOCV -> Observaciones impredecibles
 loo_error <- resid(m11) / (1 - hatvalues(m11))
-
 head(order(abs(loo_error), decreasing = TRUE), 10)
 
+# Observaciones con mayor error de predicción absoluto
 residuos <- resid(m11)
-
-# Observaciones con mayor error absoluto
 head(order(abs(residuos), decreasing = TRUE), 10)
 
+# En ambos casos las observaciones más impredecibles
+# son las mismas
+
+# Encontrar las observaciones más influyentes en
+# el modelo seleccionado
 
 # Matriz de diseño
 X <- model.matrix(m11)

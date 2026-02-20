@@ -58,5 +58,6 @@ db <- db %>% select(log_salary,
                     cuentaPropia,
                     oficio,
                     p6050,
-                    p7040
+                    p7040,
+                    chunk
                     )
