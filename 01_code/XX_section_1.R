@@ -114,6 +114,8 @@ coef_fwl <- coef(modelo_fwl)
 
 stargazer(modelo_fwl, type = "text")
 
+
+################Tabla
 extra_rows <- data.frame(
   term = "Edad pico con Bootstrap",
   
