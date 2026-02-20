@@ -40,4 +40,11 @@ influence_beta <- sqrt(colSums(beta_diff^2))
 #Normalización de la influencia
 influence_beta <- influence_beta / sqrt(ncol(X))
 # Observaciones más influyentes
+db
 head(order(influence_beta, decreasing = TRUE), 10)
+
+# Ahora hermos un análisis directo por grupos diferenciados por edad,
+# género, formalidad y quintil de ingreso
+
+db$loo_error <- abs(resid(m11) / (1 - hatvalues(m11)))
+db$influence <- influence_beta

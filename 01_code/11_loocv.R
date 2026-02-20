@@ -1,6 +1,6 @@
 # Nos quedamos con el modelo 11 :)
 # Ajustar modelo
-m11 <- lm(modelo_11, data = db_total)
+m11 <- lm(modelo_11, data = db)
 
 # Vamos a usar la forma cerrada para calcular el error con
 # LOOCV (usar el leverage)

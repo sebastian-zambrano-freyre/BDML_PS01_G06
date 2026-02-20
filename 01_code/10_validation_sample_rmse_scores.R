@@ -1,7 +1,6 @@
 # Separemos las bases en train y test
 db_train <- db %>% filter(chunk < 8)
 db_test <- db %>% filter(chunk > 7)
-db_total <- db
 
 # Establecemos el seed
 set.seed(777)
