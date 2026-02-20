@@ -1,4 +1,4 @@
-################Tabla Seccion 1
+# Tabla de Comparación de los modelos 1 y 2
 extra_rows <- data.frame(
   term = "Edad pico con Bootstrap",
   
@@ -42,18 +42,47 @@ tabla_1 <- tabla_1 |>
 tabla_1
 
 gtsave(tabla_1,
-       "02_outputs/tables/tabla_1.png",
-       dpi = 300
+       "02_outputs/tables/tabla_1_m1_m2.png",
+       zoom = 3
 )
 
-gtsave(tabla_1, "02_outputs/tables/tabla_1.pdf")
 
-# De la tabla del cuaderno, para los 12 modelos
-scores<- data.frame( Model= c(1, 2, 3, 4),
-                     RMSE_vsa= c(score1a, score2a, score3a, score4a), 
-                     RMSE_kfold= c(score1b, score2b, score3b, score4b),
-                     RMSE_loocv= c(score1c, score2c, score3c, score4c)
+# Tabla para comparar los scores de predicción de los modelos
+
+tabla_modelos <- data.frame(
+  Modelo = paste("Modelo", 1:12),
+  RMSE = rmse_scores,
+  Descripción = c(
+    rep("De la Sección 1", 2),
+    rep("De la Sección 2", 2),
+    rep("Mayor complejidad", 8)
+  ),
+  Selección = ifelse(1:12 == 11, "Modelo ganador", "")
 )
 
-head(scores)
+tabla_RMSE <- datasummary_df(
+  tabla_modelos,
+  fmt = 6,
+  title = "Comparación de Modelos: RMSE",
+  output = "gt"
+) |>
+  cols_align(
+    align = "center",
+    columns = everything()
+  ) |>
+  cols_width(
+    Modelo ~ px(150),
+    Descripción ~ px(250),
+    RMSE ~ px(150),
+    Selección ~ px(200)
+  ) |>
+  tab_options(
+    heading.align = "center",
+    table.width = px(750)
+  )
 
+gtsave(
+  tabla_RMSE,
+  filename = "02_outputs/tables/tabla_rmse.png",
+  zoom = 3
+)
