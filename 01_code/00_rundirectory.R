@@ -25,7 +25,7 @@ source("01_code/01_install_packages.R")
 source("01_code/02_data_scrapper.R")
 
 # Paso 03: Limpiar base y construir nuevas variables necesarias
-source("01_code/03_db_cleaning_and_construction")
+source("01_code/03_db_cleaning_and_construction.R")
 
 # Paso 04: Definir todos los modelos que usaremos en el PS01
 source("01_code/04_define_models.R")

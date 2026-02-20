@@ -1,57 +1,33 @@
 #Separemos las bases en train y test
 db_train <- bind_rows(lista_tablas[1:7]) ##CAMBIAR ESTO
 db_test <- bind_rows(lista_tablas[8:10]) ##CAMBIAR ESTO
-db_total <- bind_rows(lista_tablas)
+db_total <- db
 
 set.seed(777)
 
-modelo_1 <- log_salary ~ age + age2
 m1 <- lm(modelo_1,
          data = db_train)
 
 predictions <- predict(object=m1, newdata=db_test)
 score1 <- RMSE(pred = predictions, obs = db_test$log_salary)
-score1
 
-modelo_2 <- log_salary ~ age + age2 + totalHoursWorked + relab
 m2 <- lm(modelo_2,
          data = db_train)
 
 predictions <- predict(object=m2, newdata=db_test)
 score2 <- RMSE(pred = predictions, obs = db_test$log_salary)
-score2
 
-modelo_3 <- log_salary ~ female
 m3 <- lm(modelo_3,
          data = db_train)
 
 predictions <- predict(object=m3, newdata=db_test)
 score3 <- RMSE(pred = predictions, obs = db_test$log_salary)
-score3
 
-modelo_4 <- log_salary ~ female + age + age2 + college + hoursWorkUsual + formal + sizeFirm + oficio
 m4 <- lm(modelo_4,
          data = db_train)
 
 predictions <- predict(object=m4, newdata=db_test)
 score4 <- RMSE(pred = predictions, obs = db_test$log_salary)
-score4
-
-score1
-score2
-score3
-score4
-
-##Nuevos modelos
-modelo_5 <-  log_salary ~ female + age + age2 + college + femage + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_6 <-  log_salary ~ female + age + age2 + college + femage + femage2 + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_7 <-  log_salary ~ female + age + age2 + college + femage + p6050 + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_8 <-  log_salary ~ female + age + age2 + college + femage + femage2 + p6050 + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_9 <-  log_salary ~ female + age + age2 + college + femage + femage2 + p7040 + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_10 <- log_salary ~ female + age + age2 + college + p6050 + p7040 + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_11 <- log_salary ~ female + age + age2 + college + p6050 + p7040 + femage + hoursWorkUsual + formal + sizeFirm + oficio
-modelo_12 <- log_salary ~ female + age + age2 + college + p6050 + p7040 + femage + femage2 + hoursWorkUsual + formal + sizeFirm + oficio
-
 
 
 modelos <- list()
