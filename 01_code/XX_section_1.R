@@ -155,8 +155,13 @@ tabla_1 <- tabla_1 |>
   )
 
 tabla_1
+
 gtsave(tabla_1,
-       "tabla_1.html")
+       "02_outputs/tables/tabla_1.png",
+       dpi = 300
+       )
+
+gtsave(tabla_1, "02_outputs/tables/tabla_1.pdf")
 
 ##################################
 db_1$predicciones1 <- predict(m1)
@@ -182,18 +187,36 @@ db_1$predicciones2_2 <- predict(m2)
 db_1$pred_tilde <- predict(modelo_fwl)
 db_1$pred_controles <- predict(reg_y)
 #db_1$predicciones2_3 <- db_1$pred_tilde + db_1$pred_controles
-db_1$predcciones2_3 <- coef_fwl["age_tilde"] * db_1$age_tilde +
-  coef_fwl["age2_tilde"] * db_1$age2_tilde
+db_1$predcciones2_3 <- coef_fwl["age_tilde"] * db_1$age +
+  coef_fwl["age2_tilde"] * db_1$age2
+#aqui es necesario usar listas de valores para las dos variables
+
 
 stargazer(m1, m2, modelo_fwl, type = "text")
 
 ggplot(db_1, aes(x = age)) +
   #geom_point(aes(y = log_salary), color = "black") +          # Datos reales
-  geom_line(aes(y = predicciones1), color = "blue", linewidth = 1) +  # Predicción 1
+  geom_line(aes(y = predicciones1, color = "Modelo 1"), linewidth = 1.2) +  # Predicción 1
   #geom_line(aes(y = predicciones2), color = "orange", linewidth = 0.5) +  # Predicción 2
-  geom_line(aes(y = predicciones2_1), color = "red", linewidth = 1) +  # Predicción 2.1
+  geom_line(aes(y = predicciones2_1, color = "Modelo 2"), linewidth = 1.2) +  # Predicción 2.1
   #geom_line(aes(y = predicciones2_3), color = "green", linewidth = 0.5) +  # Predicción 2.1
-  labs(title = "Predicciones del modelo",
-       x = "age",
-       y = "log_salary") +
-  theme_minimal()
+  scale_color_manual(
+    values = c("Modelo 1" = "#1F4E79",
+              "Modelo 2" = "#8B0000")
+  ) +
+  labs(title = "Perfil Edad - Ingreso con 2 modelos",
+       x = "Edad",
+       y = "Log del salario",
+       color = NULL
+       ) +
+  theme_minimal(base_size = 14) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 14),
+    axis.title = element_text(face = "bold"),
+    legend.position = "bottom",
+    legend.text = element_text(size = 12),
+    panel.grid.minor = element_blank()
+)
+
