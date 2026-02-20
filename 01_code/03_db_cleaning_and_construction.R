@@ -29,6 +29,7 @@ head(db_miss, 20)
 db <- db[, !names(db) %in% c("p7350", "p7422", "p7422s1", "p7472", "p7472s1", "p7310", "ina", "inac", "imdi", "imdies", "cclasnr5")]
 rm(db_miss)
 rm(lista_tablas)
+rm(Nobs, pages, path)
 
 # Creación de variables útiles en las siguientes secciones
 
