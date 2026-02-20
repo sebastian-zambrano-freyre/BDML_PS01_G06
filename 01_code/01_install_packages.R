@@ -18,4 +18,5 @@ p_load(rio, # import/export data
        modelsummary,
        gt,
        webshot2,
-       rvest ) # Librería de web scraping.
+       rvest,    # Librería de web scraping.
+       patchwork)

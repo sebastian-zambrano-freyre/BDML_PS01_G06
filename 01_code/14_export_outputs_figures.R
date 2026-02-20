@@ -67,89 +67,229 @@ ggsave(
 
 # Analisis de error de predicción y de influencia de las observaciones, por diversos criterios
 # Edad
-ggplot(edad_stats,
-       aes(x=grupo_edad,y=error))+
-  geom_col()+
-  labs(title="Error de predicción por grupo de edad",
-       x="Grupo de edad",
-       y="Error LOOCV promedio")+
-  theme_minimal()
 
-ggplot(edad_stats,
-       aes(x=grupo_edad,y=influencia))+
-  geom_col()+
-  labs(title="Influencia por grupo de edad",
-       x="Grupo de edad",
-       y="Influencia promedio")+
-  theme_minimal()
+# Gráfico 1: Error de predicción
+g1 <- ggplot(edad_stats,
+             aes(x = grupo_edad, y = error, fill = "Error LOOCV")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Error de predicción por grupo de edad",
+    x = "Grupo de edad",
+    y = "Error promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
 
-# Genero
-ggplot(genero_stats,
-       aes(x=genero,y=error))+
-  geom_col()+
-  labs(title="Error de predicción por género",
-       x="Género",
-       y="Error LOOCV promedio")+
-  theme_minimal()
+# Gráfico 2: Influencia
+g2 <- ggplot(edad_stats,
+             aes(x = grupo_edad, y = influencia, fill = "Influencia")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Influencia por grupo de edad",
+    x = "Grupo de edad",
+    y = "Influencia promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
 
-ggplot(genero_stats,
-       aes(x=genero,y=influencia))+
-  geom_col()+
-  labs(title="Influencia por género",
-       x="Género",
-       y="Influencia promedio")+
-  theme_minimal()
+figure_edad <- g1 | g2
+
+ggsave(
+  "02_outputs/figures/grafico_edad.png",
+  plot = figure_edad,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
+# Género
+# Gráfico 1: Error de predicción
+g1 <- ggplot(genero_stats,
+             aes(x = genero, y = error, fill = "Error LOOCV")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Error de predicción por Género",
+    x = "Género",
+    y = "Error promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+# Gráfico 2: Influencia
+g2 <- ggplot(genero_stats,
+             aes(x = genero, y = influencia, fill = "Influencia")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Influencia por Género",
+    x = "Género",
+    y = "Influencia promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+figure_genero <- g1 | g2
+
+ggsave(
+  "02_outputs/figures/grafico_genero.png",
+  plot = figure_genero,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
 
 # Formalidad
-ggplot(formal_stats,
-       aes(x=formalidad,y=error))+
-  geom_col()+
-  labs(title="Error de predicción por formalidad",
-       x="Formalidad",
-       y="Error LOOCV promedio")+
-  theme_minimal()
+# Gráfico 1: Error de predicción
+g1 <- ggplot(formal_stats,
+             aes(x = formalidad, y = error, fill = "Error LOOCV")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Error de predicción por Formalidad",
+    x = "Formalidad",
+    y = "Error promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
 
-ggplot(formal_stats,
-       aes(x=formalidad,y=influencia))+
-  geom_col()+
-  labs(title="Influencia por formalidad",
-       x="Formalidad",
-       y="Influencia promedio")+
-  theme_minimal()
+# Gráfico 2: Influencia
+g2 <- ggplot(formal_stats,
+             aes(x = formalidad, y = influencia, fill = "Influencia")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Influencia por Formalidad",
+    x = "Formalidad",
+    y = "Influencia promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+figure_formalidad <- g1 | g2
+
+ggsave(
+  "02_outputs/figures/grafico_formalidad.png",
+  plot = figure_formalidad,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
 
 # Quintiles de ingreso
-ggplot(ingreso_stats,
-       aes(x=quintil_ingreso,y=error))+
-  geom_col()+
-  labs(title="Error de predicción por quintil de ingreso",
-       x="Quintil ingreso",
-       y="Error LOOCV promedio")+
-  theme_minimal()
+# Gráfico 1: Error de predicción
+g1 <- ggplot(ingreso_stats,
+             aes(x = quintil_ingreso, y = error, fill = "Error LOOCV")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Error de predicción por Ingreso",
+    x = "Quintil de Ingreso",
+    y = "Error promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
 
-ggplot(ingreso_stats,
-       aes(x=quintil_ingreso,y=influencia))+
-  geom_col()+
-  labs(title="Influencia por quintil de ingreso",
-       x="Quintil ingreso",
-       y="Influencia promedio")+
-  theme_minimal()
+# Gráfico 2: Influencia
+g2 <- ggplot(ingreso_stats,
+             aes(x = quintil_ingreso, y = influencia, fill = "Influencia")) +
+  geom_col(width = 0.6) +
+  labs(
+    title = "Influencia por Ingreso",
+    x = "Quintil de Ingreso",
+    y = "Influencia promedio",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+figure_ingreso <- g1 | g2
+
+ggsave(
+  "02_outputs/figures/grafico_ingreso.png",
+  plot = figure_ingreso,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
 
 # Sesgo VS Error para grupos de edad
-ggplot(edad_stats,
-       aes(x=error,y=sesgo,label=grupo_edad))+
-  geom_point(size=4)+
-  geom_text(nudge_y=0.005)+
+grafico_edad_bias <- ggplot(edad_stats,
+                            aes(x = error, y = sesgo, label = grupo_edad)) +
+  geom_point(size = 4, color = "#1F4E79") +
+  geom_text(
+    nudge_y = 0.003,
+    size = 4
+  ) +
   labs(
-    x="Error promedio",
-    y="Sesgo promedio"
+    title = "Sesgo vs Error por Grupo de Edad",
+    x = "Error promedio",
+    y = "Sesgo promedio"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    panel.grid.minor = element_blank()
   )
 
+ggsave(
+  "02_outputs/figures/sesgo_error_edad.png",
+  plot = grafico_edad_bias,
+  width = 7,
+  height = 5,
+  dpi = 300
+)
+
 # Sesgo VS Error para quintiles de ingreso
-ggplot(ingreso_stats,
-       aes(x=error,y=sesgo,label=quintil_ingreso))+
-  geom_point(size=4)+
-  geom_text(nudge_y=0.1)+
+grafico_ingreso_bias <- ggplot(ingreso_stats,
+                               aes(x = error, y = sesgo, label = quintil_ingreso)) +
+  geom_point(size = 4, color = "#1F4E79") +
+  geom_text(
+    nudge_y = 0.05,
+    size = 4
+  ) +
   labs(
-    x="Error promedio",
-    y="Sesgo promedio"
+    title = "Sesgo vs Error por Quintil de Ingreso",
+    x = "Error promedio",
+    y = "Sesgo promedio"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    panel.grid.minor = element_blank()
   )
+
+ggsave(
+  "02_outputs/figures/sesgo_error_ingreso.png",
+  plot = grafico_ingreso_bias,
+  width = 7,
+  height = 5,
+  dpi = 300
+)
