@@ -219,4 +219,3 @@ ggplot(db_1, aes(x = age)) +
     legend.text = element_text(size = 12),
     panel.grid.minor = element_blank()
 )
-
