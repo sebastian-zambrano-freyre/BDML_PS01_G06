@@ -1,16 +1,3 @@
-##Tomamos la base ya limpia y armada
-db <- bind_rows(lista_tablas)
-db <- db %>% filter(age>=18,
-                    ocu == 1,                 # Solo ocupados
-                    y_salary_m > 0,           # Salario positivo
-                    !is.na(sex))
-
-#Agregar logaritmo del salario
-db_1 <- db %>% mutate(
-  log_salary = log(y_salary_m),
-  age2 = age^2
-)
-
 #Modelo 1
 m1 <- lm(
   log_salary ~ age + age2,

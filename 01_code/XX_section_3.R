@@ -1,40 +1,7 @@
 #Separemos las bases en train y test
-db_train <- bind_rows(lista_tablas[1:7])
-db_test <- bind_rows(lista_tablas[8:10])
+db_train <- bind_rows(lista_tablas[1:7]) ##CAMBIAR ESTO
+db_test <- bind_rows(lista_tablas[8:10]) ##CAMBIAR ESTO
 db_total <- bind_rows(lista_tablas)
-
-db_train <- db_train %>% filter(age>=18,
-                        ocu == 1,                 # Solo ocupados
-                        y_salary_m > 0,           # Salario positivo
-                        !is.na(sex))
-
-db_test <- db_test %>% filter(age>=18,
-                                ocu == 1,                 # Solo ocupados
-                                y_salary_m > 0,           # Salario positivo
-                                !is.na(sex))
-
-db_total <- db_total %>% filter(age>=18,
-                              ocu == 1,                 # Solo ocupados
-                              y_salary_m > 0,           # Salario positivo
-                              !is.na(sex))
-
-db_train <- db_train %>% mutate(
-  log_salary = log(y_salary_m),
-  female = 1 - sex,
-  age2 = age^2
-)
-
-db_test <- db_test %>% mutate(
-  log_salary = log(y_salary_m),
-  female = 1 - sex,
-  age2 = age^2
-)
-
-db_total <- db_total %>% mutate(
-  log_salary = log(y_salary_m),
-  female = 1 - sex,
-  age2 = age^2
-)
 
 set.seed(777)
 
@@ -74,21 +41,6 @@ score1
 score2
 score3
 score4
-
-db_train <- db_train %>% mutate(
-  femage = female * age,
-  femage2 = female * age2
-)
-
-db_test <- db_test %>% mutate(
-  femage = female * age,
-  femage2 = female * age2
-)
-
-db_total <- db_total %>% mutate(
-  femage = female * age,
-  femage2 = female * age2
-)
 
 ##Nuevos modelos
 modelo_5 <-  log_salary ~ female + age + age2 + college + femage + hoursWorkUsual + formal + sizeFirm + oficio

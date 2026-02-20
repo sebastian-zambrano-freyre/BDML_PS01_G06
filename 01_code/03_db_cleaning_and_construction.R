@@ -27,14 +27,35 @@ head(db_miss, 20)
 
 # Las siguientes variables están vacías, además se descartan porque están relacionadas a individuos que no se encuentran ocupados:
 db <- db[, !names(db) %in% c("p7350", "p7422", "p7422s1", "p7472", "p7472s1", "p7310", "ina", "inac", "imdi", "imdies", "cclasnr5")]
-
+rm(db_miss)
+rm(lista_tablas)
 
 # Creación de variables útiles en las siguientes secciones
 
 db <- db %>% mutate(
-  log_salary = log(y_salary_m), #Agregar logaritmo del salario
-  age2 = age^2, #Agregar edad al cuadrado
-  
+  log_salary = log(y_salary_m), # Agregar logaritmo del salario
+  age2 = age^2,                 # Agregar edad al cuadrado
+  female = 1 - sex,             # 1 = mujer
+  femage = female * age,        # Interacción de género con edad
+  femage2 = female * age2       # Interacción de género con edad al cuadrado
 )
 
-base_final <- db
+# Finalmente, nos quedamos solo con las variables de utilidad
+
+db <- db %>% select(log_salary,
+                    age,
+                    age2,
+                    female,
+                    femage,
+                    femage2,
+                    totalHoursWorked,
+                    relab,
+                    college,
+                    hoursWorkUsual,
+                    formal,
+                    sizeFirm,
+                    cuentaPropia,
+                    oficio,
+                    p6050,
+                    p7040
+                    )

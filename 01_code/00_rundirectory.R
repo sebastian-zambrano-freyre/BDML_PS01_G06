@@ -1,4 +1,4 @@
-###################################################
+##########################################################################################
 # Correr este directorio de scripts para obtener todos las
 # estimaciones, resultados y outputs necesarios en el repositorio
 # construido para el PS01
@@ -11,7 +11,7 @@
 # - Sebastian Zambrano Freyre
 # - Juan David Bonilla
 
-##########################################################
+##########################################################################################
 rm(list = ls())
 
 for (path in c("02_outputs", "02_outputs/figures", "02_outputs/tables", "03_temp")) {
