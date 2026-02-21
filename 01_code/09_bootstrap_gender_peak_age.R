@@ -30,7 +30,7 @@ calcular_picos <- function(data){
 set.seed(777)
 
 B <- 500   # número de repeticiones
-clusters <- unique(db_2$oficio)
+clusters <- unique(db$oficio)
 
 resultados <- matrix(NA, nrow = B, ncol = 2)
 
@@ -45,7 +45,7 @@ for (b in 1:B){
   db_boot <- do.call(rbind,
                      lapply(clusters_boot,
                             function(cl){
-                              db_2[db_2$oficio == cl, ]
+                              db[db$oficio == cl, ]
                             }))
   
   resultados[b, ] <- calcular_picos(db_boot)
