@@ -46,6 +46,58 @@ gtsave(tabla_1,
        zoom = 3
 )
 
+##Tabla comparativa modelos 3 y 4 (section 2)
+
+tabla_2 <- modelsummary(
+  list(
+    "Modelo 3" = m3.1,
+    "Modelo 4" = m4.1
+  ),
+  stars = TRUE,
+  statistic = "({std.error})",
+  gof_omit = "IC|Log|Adj|Within",
+  output = "gt"
+)
+
+gtsave(tabla_2,
+       "02_outputs/tables/tabla_2_m3_m4.png",
+       zoom = 3
+)
+
+##Tabla FWL con error estandar bootstrap
+
+# Extraer valores
+coef_est <- coef(modelo4_fwl)["x_tilde"]
+se_conv  <- summary(modelo4_fwl)$coefficients["x_tilde","Std. Error"]
+se_boot  <- se_boot_m4
+
+# data frame de parametros
+tabla_df <- data.frame(
+  Variable = "Mujer (FWL residualizada)",
+  Coeficiente = round(coef_est, 4),
+  `EE Convencional` = round(se_conv, 4),
+  `EE Bootstrap` = round(se_boot, 4)
+)
+
+# Tabla final
+tabla_3 <- tabla_df |>
+  gt() |>
+  tab_header(
+    title = "Brecha salarial asociada a ser mujer",
+    subtitle = "Modelo FWL con efectos fijos por oficio"
+  ) |>
+  cols_align(align = "center", columns = -Variable) |>
+  tab_source_note(
+    source_note = "Controles: edad, edad², universidad, horas usuales, formalidad, tamaño firma, mujer×edad y mujer×edad²."
+  ) |>
+  tab_source_note(
+    source_note = "Errores estándar convencionales y bootstrap (500 réplicas)."
+  )
+
+gtsave(tabla_3,
+       "02_outputs/tables/tabla_3_m4_se_bootstrap.png",
+       zoom = 3
+)
 
 # Tabla para comparar los scores de predicción de los modelos
 

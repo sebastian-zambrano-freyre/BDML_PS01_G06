@@ -59,7 +59,7 @@ summary(m4.1)
 #unique(db_2$depto)
 
 ##Tabla comparativa
-etable(m3, m4, m4.1)
+etable(m3.1, m4.1)
 
 
 ##Modelo estimado con FWL
@@ -239,19 +239,6 @@ IC_mujeres
 ##Media
 mean(resultados[,1])
 mean(resultados[,2])
-
-#####
-
-ggplot(df_boot, aes(x = edad_pico, fill = grupo)) +
-  geom_histogram(alpha = 0.5, bins = 30, position = "identity") +
-  geom_vline(xintercept = mean(resultados[,1]),
-             linetype = "dashed") +
-  geom_vline(xintercept = mean(resultados[,2]),
-             linetype = "dashed") +
-  labs(title = "Distribución Bootstrap de la Edad Pico",
-       x = "Edad pico",
-       y = "Frecuencia") +
-  theme_minimal()
 
 
 ###

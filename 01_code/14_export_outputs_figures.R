@@ -31,6 +31,58 @@ ggsave(
   dpi = 300
 )
 
+# Gráficos section 2
+
+#Perfil edad salario predicho por genero
+
+g1_sec2 <- ggplot(db, aes(x = age, y = log_salary)) +
+  geom_line(data = curvas_long,
+            aes(x = age, y = log_salary_hat, color = sexo),
+            linewidth = 1.2) +
+  labs(title = "Perfil Edad-Salario por Género",
+       x = "Edad",
+       y = "Log salario",
+       color = "Grupo") +
+  theme_minimal()
+
+ggsave(
+  "02_outputs/figures/Graf_Perfil_edad_salario_genero.png",
+  plot = g1_sec2,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
+#Edad pico con intervalos de confianza bootstrap
+
+g2_sec2 <- ggplot(df_boot, aes(x = edad_pico, fill = grupo)) +
+  geom_histogram(alpha = 0.5, bins = 30, position = "identity") +
+  
+  # Medias
+  geom_vline(xintercept = mean_h, linewidth = 1, color = "red") +
+  geom_vline(xintercept = mean_m, linewidth = 1, color= "blue") +
+  
+  # IC hombres
+  geom_vline(xintercept = low_h, linetype = "dashed", linewidth = 1, color = "red") +
+  geom_vline(xintercept = up_h,  linetype = "dashed", linewidth = 1 , color= "red") +
+  
+  # IC mujeres
+  geom_vline(xintercept = low_m, linetype = "dashed", linewidth = 1, color ="blue") +
+  geom_vline(xintercept = up_m,  linetype = "dashed", linewidth = 1, color ="blue") +
+  
+  labs(title = "Distribución Bootstrap de la Edad Pico",
+       x = "Edad pico",
+       y = "Frecuencia") +
+  theme_minimal()
+
+ggsave(
+  "02_outputs/figures/Graf_Distribucion_bootstrap_edadpico_genero.png",
+  plot = g2_sec2,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
 # Análisis de error LOOCV y Validation Set para el modelo elegido
 df_error <- data.frame(
   Metodo = c("Error con Grupo de Validación", "Error con LOOCV"),

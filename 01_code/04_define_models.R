@@ -27,14 +27,14 @@ db$age2_tilde <- resid(reg_age2)
 
 m2_fwl <- lm(y_tilde ~ age_tilde + age2_tilde - 1, data = db)
 
-# Modelo 3
+# Modelo 3 (version section 3)
 modelo_3 <- log_salary ~ female
 m3 <- lm(
   log_salary ~ female,
   data = db
 )
 
-# Modelo 4
+# Modelo 4 (version section 3)
 modelo_4 <- log_salary ~ female + age + age2 + college + hoursWorkUsual + formal + sizeFirm + oficio
 m4 <- lm(
   log_salary ~ female +
@@ -47,8 +47,48 @@ m4 <- lm(
   data = db
 )
 
+##Modelo 3 (section 2)
+m3.1 <- feols(
+  log_salary ~ female,
+  data = db
+)
+
+##Modelo 4.1, femage con efectos fijos de oficio
+
+m4.1 <- feols(
+  log_salary ~ female +
+    age + age2 +
+    college +
+    hoursWorkUsual +
+    formal +
+    sizeFirm +
+    femage +
+    femage2
+  | oficio,
+  data = db
+)
+summary(m4.1)
+
 # Modelo 4 hecho con FWL
 
+res_y <- feols(
+  log_salary ~ age + age2 + college +
+    hoursWorkUsual + formal + sizeFirm +
+    femage + femage2 | oficio,
+  data = db
+)
+
+res_female <- feols(
+  female ~ age + age2 + college +
+    hoursWorkUsual + formal + sizeFirm +
+    femage + femage2 | oficio,
+  data = db
+)
+
+y_tilde <- resid(res_y)
+x_tilde <- resid(res_female)
+
+modelo4_fwl <- lm(y_tilde ~ x_tilde)
 
 # Modelos del 5 al 12
 modelo_5 <-  log_salary ~ female + age + age2 + college + femage + hoursWorkUsual + formal + sizeFirm + oficio
